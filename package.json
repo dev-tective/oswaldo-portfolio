@@ -9,6 +9,21 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.13.3"
+    "@astrojs/react": "^4.3.0",
+    "@react-three/fiber": "^9.3.0",
+    "@react-three/postprocessing": "^3.0.4",
+    "@tailwindcss/vite": "^4.1.12",
+    "@types/react": "^19.1.11",
+    "@types/react-dom": "^19.1.7",
+    "@types/three": "^0.179.0",
+    "astro": "^5.13.3",
+    "astro-icon": "^1.1.5",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.12",
+    "three": "^0.179.1"
+  },
+  "devDependencies": {
+    "@types/youtube": "^0.1.2"
   }
 }
