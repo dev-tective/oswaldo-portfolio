@@ -3,7 +3,7 @@ const iconPauses = document.getElementsByClassName('icon-pause');
 const iconNext = document.getElementById('icon-next')!;
 const iconPrev = document.getElementById('icon-prev')!;
 const musicTitle = document.getElementById('music-title')!;
-const musicThumb = document.getElementById("music-thumb") as HTMLImageElement;
+// const musicThumb = document.getElementById("music-thumb") as HTMLImageElement;
 
 const tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
@@ -34,7 +34,7 @@ const handleStatePlayer = (event: YT.OnStateChangeEvent) => {
         case YT.PlayerState.CUED:
         case YT.PlayerState.BUFFERING:
             musicTitle.textContent = "Cargando..";
-            musicThumb.src = "";
+            // musicThumb.src = "";
             break;
 
         case YT.PlayerState.PLAYING:
@@ -42,8 +42,10 @@ const handleStatePlayer = (event: YT.OnStateChangeEvent) => {
             for (const el of iconPauses) el.classList.remove("hidden");
 
             const data = player.getVideoData();
-            musicTitle.textContent = data.title || "Sin título";
-            musicThumb.src = `https://img.youtube.com/vi/${data.video_id}/default.jpg`;
+            const title = data.title || "Sin título"
+            musicTitle.textContent = title;
+            musicTitle.title = title;
+            // musicThumb.src = `https://img.youtube.com/vi/${data.video_id}/default.jpg`;
             break;
 
         case YT.PlayerState.PAUSED:

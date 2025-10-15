@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { InstancedMesh, Vector3 } from "three";
+import { InstancedMesh } from "three";
 import { useFrame } from "@react-three/fiber";
 import { circleRandomPosition, randomVelocity, temp, tempColor, tempObject, tempPos } from "./move.ts";
 
@@ -9,12 +9,6 @@ const Z_BOUNDS = 20;
 
 const randomCount = () => {
     return Math.floor(Math.random() * 10) + 1;
-}
-
-export interface SparkleMove {
-    MAX_SPEED: number;
-    MAX_SCALE: number;
-    randomPosition: (zBounds: number) => Vector3;
 }
 
 function useSparkleMove() {

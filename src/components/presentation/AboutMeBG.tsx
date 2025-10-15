@@ -1,4 +1,4 @@
-import {Canvas, useLoader} from "@react-three/fiber";
+import { useLoader } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { type ReactNode, useEffect, useState } from "react";
 import { TextureLoader } from "three";
@@ -29,7 +29,7 @@ const cardImages = [
     "/cards/90140980.jpg"
 ];
 
-const PresentationBg = () => {
+const AboutMeBG = () => {
     const fronts = useLoader(TextureLoader, cardImages);
     const [cards, setCards] = useState<ReactNode[]>([])
 
@@ -45,32 +45,21 @@ const PresentationBg = () => {
     }, []);
 
     return (
-        <div className={"w-full h-full"}
-             style={{
-                 background: `radial-gradient(circle, black 60%, rgba(20,16,77,1) 100%)`,
-             }}
-        >
-            <Canvas dpr={ window.devicePixelRatio > 1 ? 1.5 : 1 }
-                    camera={{ fov: 100, near: 0.001, far: 200 }}
-                    gl={{ powerPreference: 'high-performance', antialias: false }}
-            >
-                {/*<color args={["#04041f"]} attach="background"/>*/}
+        <>
+            {/*<color args={["#04041f"]} attach="background"/>*/}
+            {cards}
 
-                {cards}
+            {Array.from({ length: 5 })
+                .map((_, i) => (
+                    <Sparkle key={i} />
+                ))
+            }
 
-                {Array.from({ length: 5 }).map((_, i) => (<Sparkle key={i} />))}
-
-                <mesh position={[0, 0, -20]}>
-                    <circleGeometry args={[5, 10]}/>
-                    <meshStandardMaterial color="white"/>
-                </mesh>
-
-                <EffectComposer multisampling={0}>
-                    <Bloom luminanceThreshold={2} mipmapBlur />
-                </EffectComposer>
-            </Canvas>
-        </div>
+            <EffectComposer multisampling={0}>
+                <Bloom luminanceThreshold={2} mipmapBlur />
+            </EffectComposer>
+        </>
     )
 };
 
-export default PresentationBg;
+export default AboutMeBG;

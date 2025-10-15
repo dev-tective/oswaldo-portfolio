@@ -1,7 +1,7 @@
 import { Mesh, Texture, TextureLoader } from "three";
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
-import {randomVelocity, squareRandomPosition} from "./move.ts";
+import { randomVelocity, squareRandomPosition } from "./move.ts";
 
 const MAX_SPEED = 0.14;
 const ROTATION_SPEED = 2;
@@ -33,7 +33,7 @@ function useYGOCard3DMove(textures: Texture[]) {
 
         // Movimiento en Z
         const velocity = baseVeloRef.current * (0.7 + 0.3 * Math.cos(state.clock.elapsedTime * 0.3));
-        mesh.position.z += Math.max(delta, velocity * MAX_SPEED);
+        mesh.position.z += Math.max(delta, velocity* MAX_SPEED);
 
         // Reset si pasa el límite
         if (mesh.position.z > Z_BOUNDS) {

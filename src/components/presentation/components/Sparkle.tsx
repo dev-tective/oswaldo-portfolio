@@ -1,4 +1,4 @@
-import useSparkleMove, { type SparkleMove } from "../hooks/useSparkleMove.ts";
+import useSparkleMove from "../hooks/useSparkleMove.ts";
 
 const colors: [number, number, number][] = [
     [1.5, 2, 8],   // azul eléctrico

@@ -34,9 +34,8 @@ const min = { icon: "Min", title: "Mínimo" };
 const max = { icon: "Max", title: "Máximo" };
 ---
 
-<audio id="bg-music" preload="metadata" />
-
-<header class="w-full h-[11vh] fixed top-0 z-30 content-center">
+<!--Navbar de play y menu-->
+<header class="w-full h-[11dvh] fixed top-0 z-30 content-center">
     <div class="h-4/5 w-11/12 m-auto flex justify-between items-center">
         <button class="option" id="btn-control">
             <Icon class="icon icon-play" name={play.icon} title={play.title} />
@@ -48,6 +47,7 @@ const max = { icon: "Max", title: "Máximo" };
     </div>
 </header>
 
+<!--Menu desplegable -->
 <aside id="menu" class="text-white flex flex-col justify-start items-center gap-7 py-7">
     {menu.map(({ title, options }) => (
         <div class="w-10/12 flex flex-col gap-3">
@@ -83,6 +83,8 @@ const max = { icon: "Max", title: "Máximo" };
         </div>
     </div>
 </aside>
+
+<!--Contenedor de la música y el efecto blur-->
 <div id="player" class="hidden" />
 <div class="fixed w-full h-full bg-white/2 backdrop-blur-md blur-overlay" />
 
@@ -145,7 +147,6 @@ const max = { icon: "Max", title: "Máximo" };
         @apply bg-cyan-950;
         border-radius: 0;
     }
-
     aside::-webkit-scrollbar-thumb {
         @apply bg-lime-400;
         border-radius: 0;

@@ -1,11 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Presentation from "../components/presentation/Presentation.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import AboutMe from "../components/presentation/AboutMe";
+import AboutMeCard from "../components/presentation/AboutMeCard.astro";
 ---
 
 <Layout>
-	<Presentation />
+	<div class="w-dvw h-dvh flex items-center justify-center relative"
+		 style="background: radial-gradient(circle, black 60%, rgba(20,16,77,1) 100%)"
+	>
+		<!--<AboutMe client:only />-->
+		<AboutMeCard />
+	</div>
 </Layout>

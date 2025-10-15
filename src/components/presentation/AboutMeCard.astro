@@ -1,0 +1,181 @@
+---
+const sides = ["back", "left", "right", "top", "bottom"];
+---
+
+<div id="card">
+    <div class="card-side" id="front">
+        <div class="effect" />
+        <div class="effect" />
+    </div>
+    {sides.map(id => (
+        <div id={id} class="card-side" />
+    ))}
+</div>
+
+<style>
+    @reference "tailwindcss";
+
+    #card {
+        @apply relative transform-3d w-[15dvw] aspect-[694/1013];
+        perspective: 800px;
+    }
+
+    .effect {
+        @apply z-[50] absolute w-full h-full pointer-events-none transition-normal duration-200 mix-blend-overlay;
+    }
+    .effect:nth-child(1) {
+        @apply mix-blend-normal;
+    }
+
+    .card-side {
+        @apply w-full h-full bg-slate-700 absolute z-50;
+    }
+
+    #front {
+        background: url("/front_oswaldo.jpeg") center no-repeat;
+        background-size: cover;
+    }
+    #back {
+        background: url("/back_card.webp") center no-repeat;
+        background-size: cover;
+    }
+    #left {
+        transform-origin: 0 0;
+    }
+    #right {
+        transform-origin: right;
+    }
+    #bottom {
+        transform-origin: bottom;
+    }
+    #top {
+        transform-origin: top;
+    }
+</style>
+
+<script>
+    const card = document.getElementById("card")!;
+    const back = document.getElementById("back")!;
+    const left = document.getElementById("left")!;
+    const right = document.getElementById("right")!;
+    const bottom = document.getElementById("bottom")!;
+    const top = document.getElementById("top")!;
+
+    let w = card.clientWidth;
+    let h = card.clientHeight;
+
+    function updateDepth() {
+        w = card.clientWidth;
+        h = card.clientHeight;
+        const depth = w * 0.025;
+
+        // Dorso
+        back.style.transform = `translate3d(0,0,-${depth}px) rotateY(180deg)`;
+
+        // Lados verticales
+        left.style.width = `${depth}px`;
+        left.style.transform = `rotate3d(0,1,0, 90deg)`;
+
+        right.style.width = `${depth}px`;
+        right.style.transform = `rotate3d(0,1,0, -90deg) translate3d(0,0, ${depth - w}px)`;
+
+        // Lados horizontales
+        bottom.style.height = `${depth}px`;
+        bottom.style.transform = `rotate3d(1,0,0, 90deg) translate3d(0,0, ${depth - h}px)`;
+
+        top.style.height = `${depth}px`;
+        top.style.transform = `rotate3d(1,0,0, -90deg)`;
+    }
+
+    updateDepth();
+    window.addEventListener("resize", updateDepth);
+
+    const effects = document.getElementsByClassName('effect') as HTMLCollectionOf<HTMLElement>;
+    let light = '';
+    let shadow = '';
+    const rgb = [255, 255, 255];
+    const zero = [0, 0, 0, 0];
+
+    const getIntensity = (position: number, args: number[]) => `rgba(${args.join(", ")}) ${position}%`;
+    const getLinear = (deg: number) => `linear-gradient(${deg}deg, `;
+    const clamp = (num: number, min: number, max: number) => Math.max(min, Math.min(num, max));
+
+    const resetEffects = () => {
+        const linear = getLinear(0);
+        const three = [0, 0, 0, 0.3];
+
+        light = `${linear}${[
+            getIntensity(40, zero),
+            getIntensity(50, [225,225,225,0.3]),
+            getIntensity(60, zero)
+        ].join(", ")})`;
+
+        shadow = `${linear}${[
+            getIntensity(0, three),
+            getIntensity(50, zero),
+            getIntensity(100, three)
+        ].join(", ")})`
+
+        effects[0].style.background = shadow;
+        effects[1].style.background = light;
+    }
+
+    resetEffects();
+
+    const changeEffects = (x: number, y: number) => {
+        const norm = {
+            x: clamp(x / 20, -1, 1),
+            y: clamp(y / 11, -1, 1),
+        }
+
+        const force = Math.abs(norm.x) * Math.abs(norm.y);
+        const intensity = force + 0.3;
+        const shadowIntensity = {
+            start: (norm.y > 0) ? intensity : 0.2,
+            end: (norm.y < 0) ? intensity : 0.2,
+        }
+        const baseAngle = !(norm.x * norm.y > 0) ? 120 : -120;
+        const angle = baseAngle * force;
+        const linear = getLinear(angle);
+
+        light = `${linear}${[
+            getIntensity(40, zero),
+            getIntensity(50, [...rgb, intensity]),
+            getIntensity(60, zero)
+        ].join(", ")})`;
+
+        shadow = `${linear}${[
+            getIntensity(0, [0, 0, 0, shadowIntensity.end]),
+            getIntensity(50, zero),
+            getIntensity(100, [0, 0, 0, shadowIntensity.start])
+        ].join(", ")})`;
+    };
+
+    const rotationObserver = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+            if (m.attributeName == "style") {
+                changeEffects(rotateX, rotateY);
+                effects[0].style.background = shadow;
+                effects[1].style.background = light;
+            }
+        }
+    })
+    rotationObserver.observe(card, { attributes: true });
+
+    let rotateX = 0;
+    let rotateY = 0;
+
+    card.addEventListener("mousemove", (e) => {
+        const { layerX, layerY } = e;
+        rotateX = ((layerX - w / 2) / w) * 50;
+        rotateY = -((layerY - h / 2) / h) * 50;
+        console.log("rotateX", rotateX);
+        console.log("rotateY", rotateY);
+        card.style.transform = `rotateY(${rotateX}deg) rotateX(${rotateY}deg)`;
+    });
+
+    card.addEventListener("mouseout", (e) => {
+        card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        resetEffects();
+    })
+</script>
